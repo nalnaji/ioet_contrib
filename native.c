@@ -30,7 +30,18 @@
 
 
 ////////////////// BEGIN FUNCTIONS /////////////////////////////
-
+void toggle_pin(lua_State *L) {
+    
+    printf("in TOGGLE\n");
+    uint32_t *reg_gpio = (uint32_t *)(0x400E1004 + 0x400);
+    *reg_gpio = 1 << 9;
+    
+    uint32_t *reg_oder = (uint32_t *)(0x400E1044 + 0x400);
+    *reg_oder = 1 << 9;
+    
+    uint32_t *reg_ovr = (uint32_t *)(0x400E105C + 0x400);
+    *reg_ovr = 1 << 9;
+}
 int contrib_fourth_root_m1000(lua_State *L) //mandatory signature
 {
     //Get param 1 from top of stack
@@ -177,6 +188,7 @@ const LUA_REG_TYPE contrib_native_map[] =
     { LSTRKEY( "hello" ), LFUNCVAL ( contrib_hello ) },
     { LSTRKEY( "helloX" ), LFUNCVAL ( contrib_helloX_entry ) },
     { LSTRKEY( "fourth_root"), LFUNCVAL ( contrib_fourth_root_m1000 ) },
+    { LSTRKEY( "toggle_pin"), LFUNCVAL ( toggle_pin ) },
     { LSTRKEY( "run_foobar"), LFUNCVAL ( contrib_run_foobar ) },
     { LSTRKEY( "makecounter"), LFUNCVAL ( contrib_makecounter ) },
 
